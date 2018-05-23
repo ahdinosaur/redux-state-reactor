@@ -1,5 +1,7 @@
 # redux-state-reactor
 
+**not yet implemented**
+
 [redux middleware](https://redux.js.org/advanced/middleware) to react to state and dispatch actions
 
 ```shell
