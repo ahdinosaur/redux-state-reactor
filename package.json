@@ -55,6 +55,7 @@
     "npm-run-all": "^4.0.1",
     "nyc": "^11.7.1",
     "prettier-standard": "^8.0.1",
+    "redux": "^4.0.0",
     "standard": "^11.0.1"
   },
   "dependencies": {

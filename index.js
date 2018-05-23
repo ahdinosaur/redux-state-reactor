@@ -1,3 +1,14 @@
-module.exports = reduxStateReactor
+module.exports = {
+  middleware: createMiddleware
+}
 
-function reduxStateReactor () {}
+function createMiddleware (reactors) {
+  return function middleware (store) {
+    return function onNext (next) {
+      return function onAction (action) {
+        console.log('middleware action', action)
+        next(action)
+      }
+    }
+  }
+}
