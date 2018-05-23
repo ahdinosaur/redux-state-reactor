@@ -2,7 +2,7 @@
 
 **not yet implemented**
 
-[redux middleware](https://redux.js.org/advanced/middleware) to react to state and dispatch actions
+[redux middleware](https://redux.js.org/advanced/middleware) to dispatch actions using state selectors
 
 ```shell
 npm install --save redux-state-reactor

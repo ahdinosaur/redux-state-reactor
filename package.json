@@ -1,7 +1,7 @@
 {
   "name": "redux-state-reactor",
   "version": "0.0.0",
-  "description": "redux middleware to react to state and dispatch actions",
+  "description": "redux middleware to dispatch actions using state selectors",
   "main": "index.js",
   "scripts": {
     "start": "node-dev example",
