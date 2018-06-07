@@ -9,18 +9,45 @@ test('redux-state-reactor', function (t) {
   t.is(typeof stateReactorMiddleware, 'function', 'middleware is function')
 })
 
-test('runs reactors after every action', function (t) {
-  const calls = 3
-
-  const ACTION = { type: 'test' }
+test('reactor is not called with initial state', function (t) {
+  const expectedCalls = 0
   const STATE = {}
-  var called = 0
+
+  var calls = 0
 
   const reducer = (state = STATE, action) => state
 
   const reactor = state => {
     t.is(state, STATE)
-    called++
+    calls++
+    return false
+  }
+
+  const stateReactors = [reactor]
+  const store = createStore(
+    reducer,
+    applyMiddleware(
+      stateReactorMiddleware(stateReactors)
+    )
+  )
+
+  t.is(calls, expectedCalls)
+})
+
+test('reactor runs after every action', function (t) {
+  const actionDispatches = 3
+  const expectedCalls = actionDispatches
+
+  const ACTION = { type: 'test' }
+  const STATE = {}
+
+  var calls = 0
+
+  const reducer = (state = STATE, action) => state
+
+  const reactor = state => {
+    t.is(state, STATE)
+    calls++
     return false
   }
 
@@ -35,23 +62,23 @@ test('runs reactors after every action', function (t) {
     )
   )
   
-  for (var i = 0; i < calls; i++) {
+  for (var i = 0; i < actionDispatches; i++) {
     store.dispatch(ACTION)
   }
 
-  t.is(called, calls)
+  t.is(calls, expectedCalls)
 })
 
-// test('reactor can dispatch from initial state', function (t) {
-
 test('reactor can return action', function (t) {
+  const expectedCalls = 2 // once for each next state
+
   const ACTION_ONE = { type: 'one' }
   const ACTION_TWO = { type: 'two' }
   const STATE_ONE = {}
   const STATE_TWO = {}
   const STATE_THREE = {}
 
-  var called = 0
+  var calls = 0
 
   const reducer = (state = STATE_ONE, action) => {
     if (action === ACTION_ONE) return STATE_TWO
@@ -60,7 +87,7 @@ test('reactor can return action', function (t) {
   }
 
   const reactor = state => {
-    called++
+    calls++
     if (state === STATE_TWO) return ACTION_TWO
     return false
   }
@@ -80,7 +107,7 @@ test('reactor can return action', function (t) {
 
   const state = store.getState()
   t.is(state, STATE_THREE)
-  t.is(called, 3) // once for each state
+  t.is(calls, expectedCalls) // once for each state
 })
 
 // test('race condition')
